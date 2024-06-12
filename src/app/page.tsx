@@ -1,95 +1,150 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+import axios from "axios";
+import { useState, useEffect, SetStateAction } from "react";
+
+interface IPData {
+  status: string;
+  country: string;
+  countryCode: string;
+  region: string;
+  regionName: string;
+  city: string;
+  zip: string;
+  lat: number;
+  lon: number;
+  timezone: string;
+  isp: string;
+  org: string;
+  as: string;
+  query: string;
+  port?: string;
+}
+
+function debounce<F extends (...args: any[]) => any>(func: F, waitFor: number) {
+  let timeout: ReturnType<typeof setTimeout> | null = null;
+
+  const debounced = (...args: Parameters<F>) => {
+    if (timeout !== null) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+    timeout = setTimeout(() => func(...args), waitFor);
+  };
+
+  return debounced as (...args: Parameters<F>) => ReturnType<F>;
+}
+function validateIpFormat(ip: string) {
+  var ipFormat =
+    /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+
+  if (ip.match(ipFormat)) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 export default function Home() {
+  const [ipInput, setIpInput] = useState<string>("");
+  const [ip, setIp] = useState([]);
+  const [ipData, setIpData] = useState<IPData | null>(null);
+  const lookupIP = async () => {
+    if (ipInput && validateIpFormat(ip[0])) {
+      try {
+        const response = await axios.get(`http://ip-api.com/json/${ip[0]}`);
+        setIpData({ ...response.data, port: ip[1] });
+      } catch (error) {
+        console.warn("Error fetching IP data:", error);
+      }
+    }
+  };
+
+  const debouncedLookupIP = debounce(lookupIP, 2000);
+  useEffect(() => {
+    debouncedLookupIP();
+  }, [ipInput]);
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
+    <>
+      <main className="container_ip_data">
+        <h1>SIMPLE IP LOOK UP</h1>
+        <input
+          type="text"
+          value={ipInput}
+          onChange={(e) => {
+            const ipValidValue = e.target.value.replace(/[^0-9.:]/g, "");
+            setIpInput(ipValidValue);
+            setIp(ipValidValue.split(":") as SetStateAction<never[]>);
+          }}
+        />
+        {ipData && ipData.status == "success" ? (
+          <div>
+            <h2>IP Data:</h2>
+
+            {Object.keys(ipData).map((key) => {
+              return (
+                <div>
+                  <p>
+                    {key.substring(0, 1).toUpperCase() +
+                      key.substring(1, key.length)}
+                    :{ipData[key as keyof IPData]}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        ): (<div>
+               <br/><br/>
+          Failed to find information about this IP Address, the range could be private.
+        </div>)}
+      </main>
+      <footer>
+      <br/><br/>
+        The source code for this is available at:{" "}
+        <div id="github">
+          {" "}
+        
+          <a about="_blank" href="https://github.com/L-Goncalves">
+          <img width="19" height="19" alt="GitHub Logomark" src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"/>
+            github.com/L-Goncalves{" "}
           </a>
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
+        <br />
+        <div>
+        <br/><br/>
+          <h2>Disclaimer:</h2>
           <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
+            This IP Lookup Project is provided "as is" and is intended for
+            informational and educational purposes only. It allows users to look
+            up Internet Protocol (IP) addresses at no cost. <br/><br/>The purpose of this
+            project is to simply provide information about an IP address. It
+            does not support, condone, or engage in any illegal activities.
+            <br/><br/>
+            Searching for an IP address is not illegal as it is public
+            information used on the internet. <br/><br/>However, tracking IP addresses for
+            the purposes of harassment, cyber crimes, or any other illegal
+            activities is against the law.
+            
+            <br/><br/>
+             The creator of this project makes no
+            representations or warranties of any kind, express or implied, about
+            the completeness, accuracy, reliability, suitability, or
+            availability of the information provided.
+            <br/><br/>
+             Any reliance you place on
+            such information is strictly at your own risk. The user agrees to
+            use the information provided responsibly and acknowledges that the
+            creator is not responsible for any damages, losses, or consequences
+            that may result from the use of this project. 
+            
+            <br/><br/>
+            Please be aware that
+            misuse of IP address information can lead to criminal charges and/or
+            civil penalties, including but not limited to those under laws that
+            protect privacy and data security.
           </p>
-        </a>
-      </div>
-    </main>
+        </div>
+      </footer>
+    </>
   );
 }
