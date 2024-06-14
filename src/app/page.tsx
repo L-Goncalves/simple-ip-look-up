@@ -4,7 +4,7 @@ import { useState, useEffect, SetStateAction } from "react";
 
 
 const API_URL_BASE = 'http://ip-api.com/json/'
-
+const PROXY_CORS = 'https://proxy-cors-three.vercel.app'
 interface IPData {
   status: string;
   country: string;
@@ -55,7 +55,7 @@ export default function Home() {
   const lookupIP = async () => {
     if (ipInput && validateIpFormat(ip[0])) {
       try {
-        const response = await axios.get(`${API_URL_BASE}${ip[0]}`);
+        const response = await axios.post(PROXY_CORS+'/get', { url: `${API_URL_BASE}${ip[0]}`})
         setIpData({ ...response.data, port: ip[1] });
       } catch (error) {
         console.warn("Error fetching IP data:", error);
@@ -149,6 +149,7 @@ export default function Home() {
           </p>
         </div>
       </footer>
+  
     </>
   );
 }
