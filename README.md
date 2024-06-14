@@ -1,36 +1,15 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Simple IP Look Up 🌐
 
-## Getting Started
+Welcome to **Simple IP Look Up**! This project is a simple way to gather information of IP addresses. It's a straightforward tool designed to fetch public IP addresses and gather insightful information about them.
 
-First, run the development server:
+> Vercel Link: (Coming Soon)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Description 📝
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Disclaimer ⚠️
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The **Simple IP Look Up Project** is provided "as is" and is intended for informational and educational purposes only. It allows users to look up Internet Protocol (IP) addresses at no cost. The purpose of this project is to simply provide information about an IP address. It does not support, condone, or engage in any illegal activities.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+The creator of this project makes no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, suitability, or availability of the information provided. Any reliance you place on such information is strictly at your own risk.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The user agrees to use the information provided responsibly and acknowledges that the creator is not responsible for any damages, losses, or consequences that may result from the use of this project. Please be aware that misuse of IP address information can lead to criminal charges and/or civil penalties, including but not limited to those under laws that protect privacy and data security. Use this tool wisely and responsibly!
