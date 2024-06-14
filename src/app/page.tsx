@@ -2,6 +2,9 @@
 import axios from "axios";
 import { useState, useEffect, SetStateAction } from "react";
 
+
+const API_URL_BASE = 'http://ip-api.com/json/'
+
 interface IPData {
   status: string;
   country: string;
@@ -34,6 +37,7 @@ function debounce<F extends (...args: any[]) => any>(func: F, waitFor: number) {
   return debounced as (...args: Parameters<F>) => ReturnType<F>;
 }
 function validateIpFormat(ip: string) {
+  // this is ugly, I know.
   var ipFormat =
     /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
 
@@ -51,7 +55,7 @@ export default function Home() {
   const lookupIP = async () => {
     if (ipInput && validateIpFormat(ip[0])) {
       try {
-        const response = await axios.get(`http://ip-api.com/json/${ip[0]}`);
+        const response = await axios.get(`${API_URL_BASE}${ip[0]}`);
         setIpData({ ...response.data, port: ip[1] });
       } catch (error) {
         console.warn("Error fetching IP data:", error);
@@ -81,9 +85,9 @@ export default function Home() {
           <div>
             <h2>IP Data:</h2>
 
-            {Object.keys(ipData).map((key) => {
+            {Object.keys(ipData).map((key: string) => {
               return (
-                <div>
+                <div key={key}>
                   <p>
                     {key.substring(0, 1).toUpperCase() +
                       key.substring(1, key.length)}
@@ -104,7 +108,7 @@ export default function Home() {
         <div id="github">
           {" "}
         
-          <a about="_blank" href="https://github.com/L-Goncalves">
+          <a about="_blank" href="https://github.com/L-Goncalves/simple-ip-look-up">
           <img width="19" height="19" alt="GitHub Logomark" src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"/>
             github.com/L-Goncalves{" "}
           </a>
