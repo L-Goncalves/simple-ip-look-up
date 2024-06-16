@@ -2,7 +2,7 @@
 
 Welcome to **Simple IP Look Up**! This project is a simple way to gather information of IP addresses. It's a straightforward tool designed to fetch public IP addresses and gather insightful information about them.
 
-> Vercel Link: (Coming Soon)
+> Vercel Link: <a href="https://ip-look-up.vercel.app/">IP LOOK UP TOOL</a>
 
 ## Description 📝
 
